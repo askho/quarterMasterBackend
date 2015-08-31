@@ -66,9 +66,11 @@
      <PropertyRef name="userName"/>
     </Key>
     <Property name="userName" Type="Edm.String" Nullable="false" MaxLength="100" Precision="10"/>
+    <Property name="authToken" Type="Edm.String" Nullable="true" MaxLength="100" Precision="10"/>
     <Property name="name" Type="Edm.String" Nullable="false" MaxLength="50" Precision="10"/>
     <Property name="address" Type="Edm.String" Nullable="true" MaxLength="100" Precision="10"/>
     <Property name="phone" Type="Edm.String" Nullable="true" MaxLength="15" Precision="10"/>
+    <Property name="email" Type="Edm.String" Nullable="false" MaxLength="100" Precision="10"/>
     <NavigationProperty name="event" Relationship="FKEYEventUser" FromRole="user" ToRole="events"/>
     <NavigationProperty name="event_user" Relationship="FKEY_event_user_userName" FromRole="user" ToRole="event_users"/>
     <NavigationProperty name="inventory" Relationship="FKEY_inventory_User" FromRole="user" ToRole="inventories"/>
@@ -237,10 +239,12 @@
     </MapEntity>
     <MapEntity UserEntityName="user" DBEntityName="user">
      <MapProperty UserEntityName="user" UserPropertyName="userName" DBPropertyName="userName"/>
+     <MapProperty UserEntityName="user" UserPropertyName="authToken" DBPropertyName="authToken"/>
      <MapProperty UserEntityName="user" UserPropertyName="password" DBPropertyName="password"/>
      <MapProperty UserEntityName="user" UserPropertyName="name" DBPropertyName="name"/>
      <MapProperty UserEntityName="user" UserPropertyName="address" DBPropertyName="address"/>
      <MapProperty UserEntityName="user" UserPropertyName="phone" DBPropertyName="phone"/>
+     <MapProperty UserEntityName="user" UserPropertyName="email" DBPropertyName="email"/>
     </MapEntity>
    </MappingDetails>
   </Schema>

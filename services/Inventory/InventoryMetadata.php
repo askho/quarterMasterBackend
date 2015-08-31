@@ -223,6 +223,9 @@ class user
     public $userName;
             
     //Edm.String
+    public $authToken;
+            
+    //Edm.String
     public $name;
             
     //Edm.String
@@ -230,6 +233,9 @@ class user
             
     //Edm.String
     public $phone;
+            
+    //Edm.String
+    public $email;
             
     //Navigation Property Inventory.events
     public $events;
@@ -367,6 +373,9 @@ class CreateInventoryMetadata
             $userEntityType, 'userName', EdmPrimitiveType::STRING
         );
         $metadata->addPrimitiveProperty(
+            $userEntityType, 'authToken', EdmPrimitiveType::STRING
+        );
+        $metadata->addPrimitiveProperty(
             $userEntityType, 'name', EdmPrimitiveType::STRING
         );
         $metadata->addPrimitiveProperty(
@@ -374,6 +383,9 @@ class CreateInventoryMetadata
         );
         $metadata->addPrimitiveProperty(
             $userEntityType, 'phone', EdmPrimitiveType::STRING
+        );
+        $metadata->addPrimitiveProperty(
+            $userEntityType, 'email', EdmPrimitiveType::STRING
         );
         
         $eventsResourceSet = $metadata->addResourceSet(

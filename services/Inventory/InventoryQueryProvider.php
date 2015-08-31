@@ -1036,6 +1036,8 @@
         	
 			$user->userName = $record['userName'];							
 								
+			$user->authToken = $record['authToken'];							
+								
 			$user->password = $record['password'];							
 								
 			$user->name = $record['name'];							
@@ -1043,6 +1045,8 @@
 			$user->address = $record['address'];							
 								
 			$user->phone = $record['phone'];							
+								
+			$user->email = $record['email'];							
 								
     		return $user;
 		}										

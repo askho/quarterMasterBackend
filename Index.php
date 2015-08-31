@@ -48,6 +48,9 @@ ClassAutoLoader::register();
  * @link      https://github.com/MSOpenTech/odataphpprod
  */
 $auth = new Auth();
+//echo $auth->register("testUser", "asdfjkl;12", "leon ho", "1367 East 61st Ave", "604 327 8390", "email@gmail.com");
+//$auth->login("testUser", "asdfjkl;12");
+//$auth->changePassword("leonHo","", "test");
 if($auth->isAuthenticated()) {
 	$dispatcher = new Dispatcher();
 	$dispatcher->dispatch();
@@ -55,4 +58,5 @@ if($auth->isAuthenticated()) {
 	header("HTTP/1.1 401 Unauthorized");
     exit;
 }
+
 ?>
