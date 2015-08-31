@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<edmx:Edmx Version="1.0" xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx">
+ <edmx:DataServices>
+  <Schema Namespace="Inventory" xmlns:d="http://schemas.microsoft.com/ado/2007/08/dataservices" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns="http://schemas.microsoft.com/ado/2006/04/edm">
+   <EntityType name="event">
+    <Key>
+     <PropertyRef name="eventId"/>
+    </Key>
+    <Property name="eventId" Type="Edm.Int32" Nullable="false" Precision="10"/>
+    <Property name="eventName" Type="Edm.String" Nullable="false" MaxLength="200" Precision="10"/>
+    <Property name="eventDescription" Type="Edm.String" Nullable="true" MaxLength="250" Precision="10"/>
+    <Property name="location" Type="Edm.String" Nullable="true" MaxLength="100" Precision="10"/>
+    <Property name="eventStartDate" Type="Edm.DateTime" Nullable="true" Precision="10"/>
+    <Property name="eventEndDate" Type="Edm.DateTime" Nullable="true" Precision="10"/>
+    <Property name="userName" Type="Edm.String" Nullable="false" MaxLength="100" Precision="10"/>
+    <NavigationProperty name="user" Relationship="FKEYEventUser" FromRole="events" ToRole="user"/>
+    <NavigationProperty name="event_inventory" Relationship="FKEY_EVENT_Inventory" FromRole="event" ToRole="event_inventories"/>
+    <NavigationProperty name="event_user" Relationship="FKEY_Event_User_EventID" FromRole="event" ToRole="event_users"/>
+   </EntityType>
+   <EntityType name="event_inventory">
+    <Key>
+     <PropertyRef name="eventInventoryId"/>
+    </Key>
+    <Property name="eventInventoryId" Type="Edm.Int32" Nullable="false" Precision="10"/>
+    <Property name="itemId" Type="Edm.Int32" Nullable="false" Precision="10"/>
+    <Property name="eventId" Type="Edm.Int32" Nullable="false" Precision="10"/>
+    <NavigationProperty name="event" Relationship="FKEY_EVENT_Inventory" FromRole="event_inventories" ToRole="event"/>
+    <NavigationProperty name="inventory" Relationship="FKEY_InventoryItemID" FromRole="event_inventories" ToRole="inventory"/>
+   </EntityType>
+   <EntityType name="event_user">
+    <Key>
+     <PropertyRef name="evetUserId"/>
+    </Key>
+    <Property name="evetUserId" Type="Edm.Int32" Nullable="false" Precision="10"/>
+    <Property name="userName" Type="Edm.String" Nullable="false" MaxLength="100" Precision="10"/>
+    <Property name="eventId" Type="Edm.Int32" Nullable="false" Precision="10"/>
+    <NavigationProperty name="event" Relationship="FKEY_Event_User_EventID" FromRole="event_users" ToRole="event"/>
+    <NavigationProperty name="user" Relationship="FKEY_event_user_userName" FromRole="event_users" ToRole="user"/>
+   </EntityType>
+   <EntityType name="inventory">
+    <Key>
+     <PropertyRef name="inventoryItemId"/>
+    </Key>
+    <Property name="inventoryItemId" Type="Edm.Int32" Nullable="false" Precision="10"/>
+    <Property name="itemId" Type="Edm.Int32" Nullable="false" Precision="10"/>
+    <Property name="condition" Type="Edm.Int32" Nullable="true" Precision="10"/>
+    <Property name="lastCheckedOutBy" Type="Edm.String" Nullable="true" MaxLength="100" Precision="10"/>
+    <Property name="checkOutDate" Type="Edm.DateTime" Nullable="true" Precision="10"/>
+    <NavigationProperty name="user" Relationship="FKEY_inventory_User" FromRole="inventories" ToRole="user"/>
+    <NavigationProperty name="item" Relationship="FK_Invetory_ItemId" FromRole="inventories" ToRole="item"/>
+    <NavigationProperty name="event_inventory" Relationship="FKEY_InventoryItemID" FromRole="inventory" ToRole="event_inventories"/>
+   </EntityType>
+   <EntityType name="item">
+    <Key>
+     <PropertyRef name="itemId"/>
+    </Key>
+    <Property name="itemId" Type="Edm.Int32" Nullable="false" Precision="10"/>
+    <Property name="itemName" Type="Edm.String" Nullable="false" MaxLength="200" Precision="10"/>
+    <Property name="description" Type="Edm.String" Nullable="true" Precision="10"/>
+    <Property name="pricing" Type="Edm.Double" Nullable="true" Precision="10"/>
+    <Property name="locationPurchased" Type="Edm.String" Nullable="true" MaxLength="150" Precision="10"/>
+    <NavigationProperty name="inventory" Relationship="FK_Invetory_ItemId" FromRole="item" ToRole="inventories"/>
+   </EntityType>
+   <EntityType name="user">
+    <Key>
+     <PropertyRef name="userName"/>
+    </Key>
+    <Property name="userName" Type="Edm.String" Nullable="false" MaxLength="100" Precision="10"/>
+    <Property name="name" Type="Edm.String" Nullable="false" MaxLength="50" Precision="10"/>
+    <Property name="address" Type="Edm.String" Nullable="true" MaxLength="100" Precision="10"/>
+    <Property name="phone" Type="Edm.String" Nullable="true" MaxLength="15" Precision="10"/>
+    <NavigationProperty name="event" Relationship="FKEYEventUser" FromRole="user" ToRole="events"/>
+    <NavigationProperty name="event_user" Relationship="FKEY_event_user_userName" FromRole="user" ToRole="event_users"/>
+    <NavigationProperty name="inventory" Relationship="FKEY_inventory_User" FromRole="user" ToRole="inventories"/>
+   </EntityType>
+   <Association name="FKEYEventUser">
+    <End Role="user" Type="Inventory.user" Multiplicity="1"/>
+    <End Role="events" Type="Inventory.event" Multiplicity="*"/>
+    <ReferentialConstraint>
+     <Principal Role="user">
+      <PropertyRef name="userName"/>
+     </Principal>
+     <Dependent Role="events">
+      <PropertyRef name="userName"/>
+     </Dependent>
+    </ReferentialConstraint>
+   </Association>
+   <Association name="FKEY_EVENT_Inventory">
+    <End Role="event" Type="Inventory.event" Multiplicity="1"/>
+    <End Role="event_inventories" Type="Inventory.event_inventory" Multiplicity="*"/>
+    <ReferentialConstraint>
+     <Principal Role="event">
+      <PropertyRef name="eventId"/>
+     </Principal>
+     <Dependent Role="event_inventories">
+      <PropertyRef name="eventId"/>
+     </Dependent>
+    </ReferentialConstraint>
+   </Association>
+   <Association name="FKEY_InventoryItemID">
+    <End Role="inventory" Type="Inventory.inventory" Multiplicity="1"/>
+    <End Role="event_inventories" Type="Inventory.event_inventory" Multiplicity="*"/>
+    <ReferentialConstraint>
+     <Principal Role="inventory">
+      <PropertyRef name="inventoryItemId"/>
+     </Principal>
+     <Dependent Role="event_inventories">
+      <PropertyRef name="itemId"/>
+     </Dependent>
+    </ReferentialConstraint>
+   </Association>
+   <Association name="FKEY_Event_User_EventID">
+    <End Role="event" Type="Inventory.event" Multiplicity="1"/>
+    <End Role="event_users" Type="Inventory.event_user" Multiplicity="*"/>
+    <ReferentialConstraint>
+     <Principal Role="event">
+      <PropertyRef name="eventId"/>
+     </Principal>
+     <Dependent Role="event_users">
+      <PropertyRef name="eventId"/>
+     </Dependent>
+    </ReferentialConstraint>
+   </Association>
+   <Association name="FKEY_event_user_userName">
+    <End Role="user" Type="Inventory.user" Multiplicity="1"/>
+    <End Role="event_users" Type="Inventory.event_user" Multiplicity="*"/>
+    <ReferentialConstraint>
+     <Principal Role="user">
+      <PropertyRef name="userName"/>
+     </Principal>
+     <Dependent Role="event_users">
+      <PropertyRef name="userName"/>
+     </Dependent>
+    </ReferentialConstraint>
+   </Association>
+   <Association name="FKEY_inventory_User">
+    <End Role="user" Type="Inventory.user" Multiplicity="1"/>
+    <End Role="inventories" Type="Inventory.inventory" Multiplicity="*"/>
+    <ReferentialConstraint>
+     <Principal Role="user">
+      <PropertyRef name="userName"/>
+     </Principal>
+     <Dependent Role="inventories">
+      <PropertyRef name="lastCheckedOutBy"/>
+     </Dependent>
+    </ReferentialConstraint>
+   </Association>
+   <Association name="FK_Invetory_ItemId">
+    <End Role="item" Type="Inventory.item" Multiplicity="1"/>
+    <End Role="inventories" Type="Inventory.inventory" Multiplicity="*"/>
+    <ReferentialConstraint>
+     <Principal Role="item">
+      <PropertyRef name="itemId"/>
+     </Principal>
+     <Dependent Role="inventories">
+      <PropertyRef name="itemId"/>
+     </Dependent>
+    </ReferentialConstraint>
+   </Association>
+   <EntityContainer name="InventoryEntities">
+    <EntitySet name="events" EntityType="Inventory.event"/>
+    <EntitySet name="event_inventories" EntityType="Inventory.event_inventory"/>
+    <EntitySet name="event_users" EntityType="Inventory.event_user"/>
+    <EntitySet name="inventories" EntityType="Inventory.inventory"/>
+    <EntitySet name="items" EntityType="Inventory.item"/>
+    <EntitySet name="users" EntityType="Inventory.user"/>
+    <AssociationSet name="FKEYEventUser" Association="Inventory.FKEYEventUser">
+     <End Role="user" EntitySet="users"/>
+     <End Role="events" EntitySet="events"/>
+    </AssociationSet>
+    <AssociationSet name="FKEY_EVENT_Inventory" Association="Inventory.FKEY_EVENT_Inventory">
+     <End Role="event" EntitySet="events"/>
+     <End Role="event_inventories" EntitySet="event_inventories"/>
+    </AssociationSet>
+    <AssociationSet name="FKEY_InventoryItemID" Association="Inventory.FKEY_InventoryItemID">
+     <End Role="inventory" EntitySet="inventories"/>
+     <End Role="event_inventories" EntitySet="event_inventories"/>
+    </AssociationSet>
+    <AssociationSet name="FKEY_Event_User_EventID" Association="Inventory.FKEY_Event_User_EventID">
+     <End Role="event" EntitySet="events"/>
+     <End Role="event_users" EntitySet="event_users"/>
+    </AssociationSet>
+    <AssociationSet name="FKEY_event_user_userName" Association="Inventory.FKEY_event_user_userName">
+     <End Role="user" EntitySet="users"/>
+     <End Role="event_users" EntitySet="event_users"/>
+    </AssociationSet>
+    <AssociationSet name="FKEY_inventory_User" Association="Inventory.FKEY_inventory_User">
+     <End Role="user" EntitySet="users"/>
+     <End Role="inventories" EntitySet="inventories"/>
+    </AssociationSet>
+    <AssociationSet name="FK_Invetory_ItemId" Association="Inventory.FK_Invetory_ItemId">
+     <End Role="item" EntitySet="items"/>
+     <End Role="inventories" EntitySet="inventories"/>
+    </AssociationSet>
+   </EntityContainer>
+   <EntityNameInformation>
+    <EntityName dbName="event" EntityTypeName="event" EntitySetName="events"/>
+    <EntityName dbName="event_inventory" EntityTypeName="event_inventory" EntitySetName="event_inventories"/>
+    <EntityName dbName="event_user" EntityTypeName="event_user" EntitySetName="event_users"/>
+    <EntityName dbName="inventory" EntityTypeName="inventory" EntitySetName="inventories"/>
+    <EntityName dbName="item" EntityTypeName="item" EntitySetName="items"/>
+    <EntityName dbName="user" EntityTypeName="user" EntitySetName="users"/>
+   </EntityNameInformation>
+   <MappingDetails>
+    <MapEntity UserEntityName="event" DBEntityName="event">
+     <MapProperty UserEntityName="event" UserPropertyName="eventId" DBPropertyName="eventId"/>
+     <MapProperty UserEntityName="event" UserPropertyName="eventName" DBPropertyName="eventName"/>
+     <MapProperty UserEntityName="event" UserPropertyName="eventDescription" DBPropertyName="eventDescription"/>
+     <MapProperty UserEntityName="event" UserPropertyName="location" DBPropertyName="location"/>
+     <MapProperty UserEntityName="event" UserPropertyName="eventStartDate" DBPropertyName="eventStartDate"/>
+     <MapProperty UserEntityName="event" UserPropertyName="eventEndDate" DBPropertyName="eventEndDate"/>
+     <MapProperty UserEntityName="event" UserPropertyName="userName" DBPropertyName="userName"/>
+    </MapEntity>
+    <MapEntity UserEntityName="event_inventory" DBEntityName="event_inventory">
+     <MapProperty UserEntityName="event_inventory" UserPropertyName="eventInventoryId" DBPropertyName="eventInventoryId"/>
+     <MapProperty UserEntityName="event_inventory" UserPropertyName="itemId" DBPropertyName="itemId"/>
+     <MapProperty UserEntityName="event_inventory" UserPropertyName="eventId" DBPropertyName="eventId"/>
+    </MapEntity>
+    <MapEntity UserEntityName="event_user" DBEntityName="event_user">
+     <MapProperty UserEntityName="event_user" UserPropertyName="evetUserId" DBPropertyName="evetUserId"/>
+     <MapProperty UserEntityName="event_user" UserPropertyName="userName" DBPropertyName="userName"/>
+     <MapProperty UserEntityName="event_user" UserPropertyName="eventId" DBPropertyName="eventId"/>
+    </MapEntity>
+    <MapEntity UserEntityName="inventory" DBEntityName="inventory">
+     <MapProperty UserEntityName="inventory" UserPropertyName="inventoryItemId" DBPropertyName="inventoryItemId"/>
+     <MapProperty UserEntityName="inventory" UserPropertyName="itemId" DBPropertyName="itemId"/>
+     <MapProperty UserEntityName="inventory" UserPropertyName="condition" DBPropertyName="condition"/>
+     <MapProperty UserEntityName="inventory" UserPropertyName="lastCheckedOutBy" DBPropertyName="lastCheckedOutBy"/>
+     <MapProperty UserEntityName="inventory" UserPropertyName="checkOutDate" DBPropertyName="checkOutDate"/>
+    </MapEntity>
+    <MapEntity UserEntityName="item" DBEntityName="item">
+     <MapProperty UserEntityName="item" UserPropertyName="itemId" DBPropertyName="itemId"/>
+     <MapProperty UserEntityName="item" UserPropertyName="itemName" DBPropertyName="itemName"/>
+     <MapProperty UserEntityName="item" UserPropertyName="description" DBPropertyName="description"/>
+     <MapProperty UserEntityName="item" UserPropertyName="pricing" DBPropertyName="pricing"/>
+     <MapProperty UserEntityName="item" UserPropertyName="locationPurchased" DBPropertyName="locationPurchased"/>
+    </MapEntity>
+    <MapEntity UserEntityName="user" DBEntityName="user">
+     <MapProperty UserEntityName="user" UserPropertyName="userName" DBPropertyName="userName"/>
+     <MapProperty UserEntityName="user" UserPropertyName="password" DBPropertyName="password"/>
+     <MapProperty UserEntityName="user" UserPropertyName="name" DBPropertyName="name"/>
+     <MapProperty UserEntityName="user" UserPropertyName="address" DBPropertyName="address"/>
+     <MapProperty UserEntityName="user" UserPropertyName="phone" DBPropertyName="phone"/>
+    </MapEntity>
+   </MappingDetails>
+  </Schema>
+ </edmx:DataServices>
+</edmx:Edmx>

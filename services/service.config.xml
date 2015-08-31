@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+<configuration>
+ <services>
+  <service name="Inventory.svc">
+   <path>\services\Inventory\InventoryDataService.php</path>
+   <classname>InventoryDataService</classname>
+   <baseURL>/Inventory.svc</baseURL>
+  </service>
+ </services>
+</configuration>
